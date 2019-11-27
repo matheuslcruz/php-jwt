@@ -29,7 +29,12 @@ $sign = base64url_encode($sign);
 // Token
 $token = $header . '.' . $payload . '.' . $sign;
 
-header('Content-type: text/plain');
-echo $token;
+header("Access-Control-Allow-Origin: *");
+header("Content-type: application/json");
+
+echo json_encode([
+  'token' => $token,
+  'expires' => $payload_json->exp
+]);
 
 ?>

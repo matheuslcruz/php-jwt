@@ -5,6 +5,7 @@ require_once 'common.php';
 // Conf
 $conf = parse_ini_file('jwt.conf');
 $token_parts = explode('.', $_GET['token']);
+header("Access-Control-Allow-Origin: *");
 
 if (count($token_parts) !== 3) {
   header("HTTP/1.1 400 Invalid token");
