@@ -9,7 +9,9 @@ $conf = parse_ini_file('jwt.conf');
 $header = ['typ' => 'JWT', 'alg' => 'HS256'];
 
 // Payload
-$payload = json_decode(file_get_contents('php://input'));
+$payload = (object) [];
+$payload->sub = md5(uniqid(json_encode(file_get_contents('php://input'))));
+$payload->aud = $_SERVER['REMOTE_ADDR'];
 $payload->iss = $conf['issuer'];
 $payload->exp = time() + ((int) $conf['token_exp']);
 
