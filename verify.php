@@ -28,6 +28,7 @@ if (count($token_parts) !== 3) {
       'token' => $_GET['token']
     ]);
   } else {
+    $header = json_decode(base64url_decode($token_parts[0]));
     $payload = base64url_decode($token_parts[1]);
     $payload_decoded = json_decode($payload);
     $now = time();
@@ -45,7 +46,7 @@ if (count($token_parts) !== 3) {
       $jwt = json_decode($payload);
       $jwt->data = json_decode($jwt->data);
 
-      echo json_encode($jwt);
+      echo json_encode([$header, $jwt]);
     }
   }
 }
