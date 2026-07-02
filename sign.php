@@ -10,7 +10,8 @@ $header = ['typ' => 'JWT', 'alg' => 'HS256'];
 
 // Payload
 $payload = (object) [];
-$payload->sub = md5(uniqid(json_encode(file_get_contents('php://input'))));
+$payload->payload = file_get_contents('php://input');
+$payload->sub = md5(uniqid($payload->payload));
 $payload->aud = $_SERVER['REMOTE_ADDR'];
 $payload->iss = $conf['issuer'];
 $payload->exp = time() + ((int) $conf['token_exp']);

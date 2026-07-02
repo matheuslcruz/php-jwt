@@ -50,7 +50,10 @@ if (count($token_parts) !== 3) {
       ]);
     } else {
       header("Content-type: application/json");
-      echo $payload;
+      $jwt = json_decode($payload);
+      $jwt->payload = json_decode($jwt->payload);
+
+      echo json_encode($jwt);
     }
   }
 }
