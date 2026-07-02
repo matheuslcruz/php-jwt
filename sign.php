@@ -10,8 +10,22 @@ $header = ['typ' => 'JWT', 'alg' => 'HS256'];
 
 // Payload
 $payload = (object) [];
-$payload->payload = file_get_contents('php://input');
-$payload->sub = md5(uniqid($payload->payload));
+$payload->data = file_get_contents('php://input');
+
+json_decode($payload->data, true);
+
+if (json_last_error() !== JSON_ERROR_NONE) {
+    http_response_code(400); // Bad Request
+
+    echo json_encode([
+        "error" => "Invalid JSON payload provided.",
+        "details" => json_last_error_msg()
+    ]);
+
+    exit;
+}
+
+$payload->sub = md5(uniqid($payload->data));
 $payload->aud = $_SERVER['REMOTE_ADDR'];
 $payload->iss = $conf['issuer'];
 $payload->exp = time() + ((int) $conf['token_exp']);

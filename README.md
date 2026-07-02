@@ -4,28 +4,33 @@ JWT signing and verification using PHP and Docker
 
 Start compose:
 
-    docker-compose up -d
+```shell
+docker-compose up -d
+```
 
 ## Sign
 
-    curl -s -X POST -d '{"username":"matheus","password":123}' localhost:8080/sign.php | jq
-
-Output:
-
-    {
-        "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2NmNhYWRmOTg5MTBhMDRlZDc5NGMwN2Q4MzY0MTIwOCIsImF1ZCI6IjE3Mi4yMC4wLjEiLCJpc3MiOiJqd3QucGhwIiwiZXhwIjoxNTc0ODY2OTczfQ.lcdGtBXI4UDiQ7tHJ9XlYLdUxr7zQrPi7Rxo1kD8Xos",
-        "expires": 1574866973
-    }
+```shell
+token=$(curl -s -X POST -d '{"username":"foo","password":"bar"}' localhost:8080/sign.php | jq -r .token)
+```
 
 ## Verify
 
-    curl -s localhost:8080/verify.php?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2NmNhYWRmOTg5MTBhMDRlZDc5NGMwN2Q4MzY0MTIwOCIsImF1ZCI6IjE3Mi4yMC4wLjEiLCJpc3MiOiJqd3QucGhwIiwiZXhwIjoxNTc0ODY2OTczfQ.lcdGtBXI4UDiQ7tHJ9XlYLdUxr7zQrPi7Rxo1kD8Xos | jq
+```shell
+curl -s localhost:8080/verify.php?token=$token | jq
+```
 
 Output:
 
-    {
-        "sub": "66caadf98910a04ed794c07d83641208",
-        "aud": "172.20.0.1",
-        "iss": "jwt.php",
-        "exp": 1574866973
-    }
+```json
+{
+  "data": {
+    "username": "foo",
+    "password": "bar"
+  },
+  "sub": "430e69a4f920a916a634b3d67c563c80",
+  "aud": "172.20.0.1",
+  "iss": "jwt.php",
+  "exp": 1783015651
+}
+```

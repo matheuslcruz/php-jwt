@@ -51,7 +51,7 @@ if (count($token_parts) !== 3) {
     } else {
       header("Content-type: application/json");
       $jwt = json_decode($payload);
-      $jwt->payload = json_decode($jwt->payload);
+      $jwt->data = json_decode($jwt->data);
 
       echo json_encode($jwt);
     }
