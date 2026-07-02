@@ -11,7 +11,7 @@ docker-compose up -d
 ## Sign
 
 ```shell
-token=$(curl -s -X POST -d '{"username":"foo","password":"bar"}' localhost:8080/sign.php | jq -r .token)
+token=$(curl -s -X POST -d @data.json localhost:8080/sign.php | jq -r .token)
 ```
 
 ## Verify
