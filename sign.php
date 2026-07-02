@@ -26,7 +26,7 @@ if (json_last_error() !== JSON_ERROR_NONE) {
 }
 
 $payload->sub = md5(uniqid($payload->data));
-$payload->aud = $_SERVER['REMOTE_ADDR'];
+$payload->aud = "php-jwt-rest-api";
 $payload->iss = $conf['issuer'];
 $payload->exp = time() + ((int) $conf['token_exp']);
 

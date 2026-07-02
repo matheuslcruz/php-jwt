@@ -40,14 +40,6 @@ if (count($token_parts) !== 3) {
         'message' => "Token expired at ".date(DATE_RSS, $payload_decoded->exp),
         'token' => $_GET['token']
       ]);
-    } else if ($payload_decoded->aud !== $_SERVER['REMOTE_ADDR']) {
-      header("HTTP/1.1 401 Audience missmatch");
-      header("Content-type: application/json");
-
-      echo json_encode([
-        'message' => 'Audience missmatch',
-        'aud' => $_SERVER['REMOTE_ADDR']
-      ]);
     } else {
       header("Content-type: application/json");
       $jwt = json_decode($payload);
